@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Gov24Crawler_ver2.Commands
+namespace gov.Commands
 {
     class RelayCommand : ICommand
     {

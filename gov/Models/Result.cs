@@ -1,4 +1,4 @@
-﻿namespace Gov24Crawler_ver2.Models
+﻿namespace gov.Models
 {
     public class Result
     {

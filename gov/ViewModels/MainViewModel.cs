@@ -1,7 +1,10 @@
-﻿using Gov24Crawler_ver2.Commands;
+﻿using gov.Commands;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Input;
 
-namespace Gov24Crawler_ver2.ViewModels
+namespace gov.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {

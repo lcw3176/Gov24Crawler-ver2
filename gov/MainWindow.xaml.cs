@@ -1,10 +1,10 @@
-﻿using Gov24Crawler_ver2.ViewModels;
+﻿using gov.ViewModels;
 using System.Windows;
 
-namespace Gov24Crawler_ver2
+namespace gov
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class MainWindow : Window
     {

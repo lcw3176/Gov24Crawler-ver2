@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Gov24Crawler_ver2.ViewModels
+namespace gov.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

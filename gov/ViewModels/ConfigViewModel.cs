@@ -1,10 +1,11 @@
-﻿using Gov24Crawler_ver2.Commands;
-using Gov24Crawler_ver2.Models;
+﻿using gov.Commands;
+using gov.Models;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace Gov24Crawler_ver2.ViewModels
+namespace gov.ViewModels
 {
     public class ConfigViewModel : BaseViewModel
     {
