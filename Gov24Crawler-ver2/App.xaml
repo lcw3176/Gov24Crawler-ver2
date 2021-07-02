@@ -1,0 +1,18 @@
+﻿<Application x:Class="Gov24Crawler_ver2.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Gov24Crawler_ver2"
+             xmlns:views="clr-namespace:Gov24Crawler_ver2.Views"
+             xmlns:viewModels="clr-namespace:Gov24Crawler_ver2.ViewModels"
+             StartupUri="MainWindow.xaml">
+    
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type viewModels:ConfigViewModel}">
+            <views:ConfigView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:WorkViewModel}">
+            <views:WorkView/>
+        </DataTemplate>
+    </Application.Resources>
+</Application>

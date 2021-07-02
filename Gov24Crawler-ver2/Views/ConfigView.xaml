@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="Gov24Crawler_ver2.Views.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Gov24Crawler_ver2.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             Background="White">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+            <RowDefinition Height="1.*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.*"/>
+            <ColumnDefinition Width="8.*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0"
+                Grid.Row="0"
+                Margin="10"
+                Content="파일 가져오기"
+                Command="{Binding GetExcelPathCommand}"/>
+
+        <TextBox Grid.Column="1"
+                 Grid.Row="0"
+                 Text="{Binding FilePath}"
+                 VerticalAlignment="Center"
+                 Margin="10"/>
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="주소 입력"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <TextBlock Grid.Column="0"
+                       Text="시,도"
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="1"
+                     Text="{Binding FisrtAddress}"
+                     VerticalAlignment="Center"
+                     Width="130"
+                     Margin="20"/>
+
+            <TextBlock Grid.Column="2"
+                       Text="시,군,구"
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="3"
+                     Text="{Binding SecondAddress}"
+                     VerticalAlignment="Center"
+                     Width="130"
+                     Margin="20"/>
+
+            <TextBlock Grid.Column="4"
+                       Text="읍,면,동"
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="5"
+                     Text="{Binding ThirdAddress}"
+                     VerticalAlignment="Center"
+                     Margin="20"/>
+
+        </Grid>
+
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"                 
+                   Text="작업 범위 (행 번호)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Margin="10"/>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     Text="{Binding StartCol}"
+                     VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="1"
+                       Text="부터"
+                       Margin="10"
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="2"
+                     Text="{Binding EndCol}"
+                     VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="3"
+                       Text="까지"
+                       Margin="10"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   Text="지번 열 번호"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBox Grid.Row="3"
+                 Grid.Column="1"
+                 Text="{Binding AddressRow}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Left"
+                 Width="100"/>
+
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   Text="지목 열 번호"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBox Grid.Row="4"
+                 Grid.Column="1"
+                 Text="{Binding MokRow}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Left"
+                 Width="100"/>
+
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
+                   Text="공부면적 열 번호"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBox Grid.Row="5"
+                 Grid.Column="1"
+                 Text="{Binding AreaRow}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Left"
+                 Width="100"/>
+        
+        <TextBlock Grid.Row="6"
+                   Grid.Column="0"
+                   Text="소유자 열 번호"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBox Grid.Row="6"
+                 Grid.Column="1"
+                 Text="{Binding OwnerRow}"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Left"
+                 Width="100"/>
+        
+        <Button Grid.Row="7"
+                Grid.Column="0"                
+                Margin="10"
+                Content="저장 경로"
+                Command="{Binding SetSavePathCommand}"/>
+
+        <TextBox Grid.Row="7"
+                 Grid.Column="1"                 
+                 Text="{Binding SavePath}"
+                 VerticalAlignment="Center"
+                 Margin="10"/>
+    </Grid>
+</UserControl>
