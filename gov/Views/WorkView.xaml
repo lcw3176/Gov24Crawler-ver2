@@ -30,7 +30,10 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
@@ -51,16 +54,31 @@
                          VerticalAlignment="Center"
                          x:Name="password"/>
 
-            <Button Grid.Column="4"
+            <TextBlock Grid.Column="4"
+                       Text="완료:"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="5"
+                       Text="{Binding CompleteCount}"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="6"
+                       Text="목표:"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="7"
+                       Text="{Binding EndCount}"
+                       VerticalAlignment="Center"/>
+            
+            <Button Grid.Column="8"
                     Content="시작"
                     Margin="5"
                     Command="{Binding StartCommand}"
                     CommandParameter="{Binding ElementName=password}"/>
 
-            <ProgressBar Grid.Column="5"
-                         Margin="0, 10, 10, 10"
-                         Value="{Binding ProgressValue}"
-                         Maximum="100"/>
+
         </Grid>
 
         <TextBlock Grid.Row="1"
