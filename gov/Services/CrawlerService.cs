@@ -162,12 +162,10 @@ namespace gov.Services
                     
                     if (temp == tempAddress)
                     {
-                        Debug.WriteLine("일치");
                         driver.SwitchTo().Window(driver.WindowHandles[1]);
                         return Task.FromResult(true);
                     }
 
-                    Debug.WriteLine("조뺑이");
                     driver.Close();
                     driver.SwitchTo().Window(driver.WindowHandles[0]);
 

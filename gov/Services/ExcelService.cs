@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace gov.Services
@@ -65,7 +63,7 @@ namespace gov.Services
 
             catch (Exception ex)
             {
-                Debug.WriteLine("엑셀 쓰기 오류");
+                Debug.WriteLine("엑셀 읽기 오류");
             }
 
             finally
@@ -88,12 +86,9 @@ namespace gov.Services
                 app = new Excel.Application();
 
                 wb = app.Workbooks.Open(savePath + ".xlsx");
-                Debug.WriteLine("파일 열음");
                 ws = wb.Worksheets.get_Item("Sheet1") as Excel.Worksheet;
-                Debug.WriteLine("시트 열음");
                 ws.Cells[index, int.Parse(Config.ownerRow)] = owner;
                 ws.Cells[index, int.Parse(Config.areaRow)] = area;
-                Debug.WriteLine("데이터 입력함 열음");
                 return Task.FromResult(true);
             }
 
