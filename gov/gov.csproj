@@ -74,6 +74,7 @@
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\CrawlerService.cs" />
+    <Compile Include="Services\DispatcherService.cs" />
     <Compile Include="Services\ExcelService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
