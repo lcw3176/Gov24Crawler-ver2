@@ -9,12 +9,7 @@ namespace gov.Services
 {
     public class ExcelService
     {
-        private string savePath = Config.savePath + @"/" + Config.firstAddress + Config.secondAddress + Config.thirdAddress;
-
-        public ExcelService()
-        {
-
-        }
+        private string savePath = Config.savePath + @"/" + Config.firstAddress + " " + Config.secondAddress + " " + Config.thirdAddress;
 
         public List<ExcelData> ReadExcel()
         {
@@ -75,7 +70,7 @@ namespace gov.Services
             return address;
         }
 
-        public Task<bool> SetExcel(string area, string owner, int index)
+        public Task<bool> SaveExcel(string area, string owner, int index)
         {
             Excel.Application app = null;
             Excel.Workbook wb = null;

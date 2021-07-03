@@ -17,7 +17,7 @@ namespace gov.Services
 
         public CrawlerService()
         {
-            webDriverWait = new WebDriverWait(driver, TimeSpan.FromSeconds(120));
+            webDriverWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
         }
 
         public Task<bool> TryLogin(string userPw)
@@ -134,6 +134,7 @@ namespace gov.Services
                 var children = driver.FindElement(By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody")).FindElements(By.TagName("tr"));
                 string temp;
                 string tempAddress;
+
                 if(string.IsNullOrEmpty(ho))
                 {
                     tempAddress = bunzi;
@@ -255,7 +256,7 @@ namespace gov.Services
             }
         }
 
-        public Task<bool> Capture(string bunzi, string ho)
+        public Task<bool> CaptureImage(string bunzi, string ho)
         {
             try
             {
@@ -267,7 +268,19 @@ namespace gov.Services
 
                 driver.ExecuteChromeCommand("Emulation.setDeviceMetricsOverride", metrics);
 
-                string path_to_save_screenshot = Config.savePath + @"/" + bunzi + "-" + ho + ".png";
+                string tempAddress;
+
+                if (string.IsNullOrEmpty(ho))
+                {
+                    tempAddress = bunzi;
+                }
+
+                else
+                {
+                    tempAddress = bunzi + "-" + ho;
+                }
+
+                string path_to_save_screenshot = Config.savePath + @"/" + tempAddress + ".png";
                 driver.GetScreenshot().SaveAsFile(path_to_save_screenshot, ScreenshotImageFormat.Png);
                
                 return Task.FromResult(true);

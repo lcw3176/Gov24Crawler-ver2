@@ -1,7 +1,6 @@
 ﻿using gov.Commands;
 using gov.Models;
 using gov.Services;
-using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +38,28 @@ namespace gov.ViewModels
             }
         }
 
+        private int completeCount = 0;
+        public int CompleteCount
+        {
+            get { return completeCount; }
+            set
+            {
+                completeCount = value;
+                OnPropertyUpdate("CompleteCount");
+            }
+        }
+
+        private int endCount = 0;
+        public int EndCount
+        {
+            get { return endCount; }
+            set
+            {
+                endCount = value;
+                OnPropertyUpdate("EndCount");
+            }
+        }
+
         public ICommand StartCommand { get; set; }
         public static ObservableCollection<Result> Results { get; set; } = new ObservableCollection<Result>();
 
@@ -49,16 +70,16 @@ namespace gov.ViewModels
 
         private void StartExecuteMethod(object obj)
         {
+            Task.Run(async () =>
+            {
+                EndCount = int.Parse(Config.endCol) - int.Parse(Config.startCol) + 1;
+                CrawlerService crawlerService = new CrawlerService();
 
-            Task.Run(async () => {
-
-                    CrawlerService crawlerService = new CrawlerService();
-
-                    string password = (obj as PasswordBox).Password;
-                    string owner;
-                    string area;
-                    bool captureResult = false;
-                    bool valueResult = false;
+                string password = (obj as PasswordBox).Password;
+                string owner;
+                string area;
+                bool captureResult = false;
+                bool valueResult = false;
 
                 if (await crawlerService.TryLogin(password))
                 {
@@ -69,16 +90,20 @@ namespace gov.ViewModels
                     foreach (ExcelData i in datas)
                     {
                         sw.Start();
-                        await crawlerService.TryGetDocument(i.bunzi, i.ho);
-                        await crawlerService.CheckValidation(i.bunzi, i.ho);
-                        captureResult = await crawlerService.Capture(i.bunzi, i.ho);
+
+                        if (!await crawlerService.TryGetDocument(i.bunzi, i.ho) || !await crawlerService.CheckValidation(i.bunzi, i.ho))
+                        {
+                            continue;
+                        }
+
+                        captureResult = await crawlerService.CaptureImage(i.bunzi, i.ho);
 
                         area = await crawlerService.TryGetArea();
                         owner = await crawlerService.TryGetOwner();
 
                         if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(owner))
                         {
-                            valueResult = await excel.SetExcel(area, owner, i.index);
+                            valueResult = await excel.SaveExcel(area, owner, i.index);
                         }
 
                         else
@@ -88,7 +113,7 @@ namespace gov.ViewModels
 
                         sw.Stop();
 
-                        DispatcherService.Invoke((System.Action)(() =>
+                        DispatcherService.Invoke(() =>
                         {
                             Results.Add(new Result()
                             {
@@ -98,15 +123,15 @@ namespace gov.ViewModels
                                 duration = sw.Elapsed.Seconds.ToString() + "s"
                             });
 
-                        }));
+                        });
                         sw.Reset();
                         await crawlerService.CloseTab();
+                        CompleteCount++;
                     }
                 }
-                
-            });
-          
 
+            });
+           
         }
     }
 
