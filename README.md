@@ -17,15 +17,18 @@
 * 파일명은 해당 토지대장의 번지수로 저장됨
 
 ## 실행 전 준비요소
+### 필수
 * AnySign for PC 설치
 * 정부24 아이디 (비밀번호 변경 권유 메세지가 뜬다면 변경후 진행할 것)
 * Chrome 브라우저 (최신 버전, [업데이트 방법](https://support.google.com/chrome/answer/95414?co=GENIE.Platform%3DDesktop&hl=ko) 참고)
+### 옵션
 * Visual Studio 2019 (.NET 데스크톱 개발)
-* Git (옵션)
+* Git 
 
 ## 실행법
+### 프로젝트로 실행
 1. 프로젝트 다운로드 (2가지 방법 중 택 1)
-    * git clone https://github.com/lcw3176/Gov24Crawler-ver2.git
+    * git clone https://github.com/lcw3176/Gov24Crawler-ver2.git 명령어 실행
     * [Download Zip](https://github.com/lcw3176/Gov24Crawler-ver2/archive/refs/heads/master.zip)
 
 2. Visual Studio를 통해 gov.sln 파일 실행
@@ -35,7 +38,10 @@
     * EXE 파일로 실행
         1. 빌드(B) -> 일괄 빌드(T) -> Release 체크 -> 빌드(B)
         2. Gov24Crawler-ver2(-master)\gov\bin\Release 폴더의 gov.exe 실행
-
+        
+### 파일로 실행
+1. [gov.zip 다운로드](https://github.com/lcw3176/Gov24Crawler-ver2/raw/master/exe/gov.zip)
+2. 압축 해제 후 gov.exe 실행
 
 ## 사용법
 ### 설정
