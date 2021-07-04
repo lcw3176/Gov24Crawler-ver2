@@ -17,31 +17,14 @@
 * 파일명은 해당 토지대장의 번지수로 저장됨
 
 ## 실행 전 준비요소
-### 필수
 * AnySign for PC 설치
 * 정부24 아이디 (비밀번호 변경 권유 메세지가 뜬다면 변경후 진행할 것)
 * Chrome 브라우저 (최신 버전, [업데이트 방법](https://support.google.com/chrome/answer/95414?co=GENIE.Platform%3DDesktop&hl=ko) 참고)
-### 옵션
-* Visual Studio 2019 (.NET 데스크톱 개발)
-* Git 
 
 ## 실행법
-### 프로젝트로 실행
-1. 프로젝트 다운로드 (2가지 방법 중 택 1)
-    * git clone https://github.com/lcw3176/Gov24Crawler-ver2.git 명령어 실행
-    * [Download Zip](https://github.com/lcw3176/Gov24Crawler-ver2/archive/refs/heads/master.zip)
-
-2. Visual Studio를 통해 gov.sln 파일 실행
-3. 프로그램 실행
-    * Visual Studio 에서 실행
-        * 화면 상단의 **시작** 클릭
-    * EXE 파일로 실행
-        1. 빌드(B) -> 일괄 빌드(T) -> Release 체크 -> 빌드(B)
-        2. Gov24Crawler-ver2(-master)\gov\bin\Release 폴더의 gov.exe 실행
-        
-### 파일로 실행
-1. [gov.zip 다운로드](https://github.com/lcw3176/Gov24Crawler-ver2/raw/master/exe/gov.zip)
-2. 압축 해제 후 gov.exe 실행
+1. [Release 채널로 이동](https://github.com/lcw3176/Gov24Crawler-ver2/releases)
+2. Gov24Crawler.zip 다운로드
+3. 압축 해제 후 gov.exe 실행
 
 ## 사용법
 ### 설정
@@ -75,3 +58,11 @@
 * 프로젝트(P) -> Nuget 패키지 관리 로 이동 후 설치된 라이브러리 업데이트
 ### 파일 위치 확인
 * gov.exe 파일과 chromedriver.exe, SeleniumExtras.WaitHelpers.dll, WebDriver.dll은 같은 위치에 있어야 함.
+
+
+## 사용된 라이브러리, 프레임워크
+* Selenium.WebDriver, version=3.141.0
+* Selenium.WebDriver.ChromeDriver, version=91.0.4472.10100
+* DotNetSeleniumExtras.WaitHelpers, version=3.11.0
+* Microsoft.Office.Interop.Excel, version=15.0.4795.1000
+* .NET Framework 4.7.2
