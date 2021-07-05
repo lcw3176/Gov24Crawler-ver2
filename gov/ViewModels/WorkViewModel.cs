@@ -38,7 +38,7 @@ namespace gov.ViewModels
             }
         }
 
-        private int completeCount = 0;
+        private static int completeCount;
         public int CompleteCount
         {
             get { return completeCount; }
@@ -49,7 +49,7 @@ namespace gov.ViewModels
             }
         }
 
-        private int endCount = 0;
+        private static int endCount;
         public int EndCount
         {
             get { return endCount; }
