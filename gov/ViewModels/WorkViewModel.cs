@@ -78,8 +78,13 @@ namespace gov.ViewModels
                 string password = (obj as PasswordBox).Password;
                 string owner;
                 string area;
+
                 bool captureResult = false;
                 bool valueResult = false;
+                bool documentResult = false;
+                bool validationResult = false;
+                bool ownerResult = false;
+                bool areaResult = false;
 
                 if (await crawlerService.TryLogin(password))
                 {
@@ -91,7 +96,10 @@ namespace gov.ViewModels
                     {
                         sw.Start();
 
-                        if (!await crawlerService.TryGetDocument(i.bunzi, i.ho) || !await crawlerService.CheckValidation(i.bunzi, i.ho))
+                        documentResult = await crawlerService.TryGetDocument(i.bunzi, i.ho);
+                        validationResult =  await crawlerService.CheckValidation(i.bunzi, i.ho);
+
+                        if(!documentResult || !validationResult)
                         {
                             continue;
                         }
@@ -101,15 +109,18 @@ namespace gov.ViewModels
                         area = await crawlerService.TryGetArea();
                         owner = await crawlerService.TryGetOwner();
 
-                        if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(owner))
+                        if (string.IsNullOrEmpty(area))
                         {
-                            valueResult = await excel.SaveExcel(area, owner, i.index);
+                            areaResult = false;
                         }
 
-                        else
+                        if(string.IsNullOrEmpty(owner))
                         {
-                            valueResult = false;
+                            ownerResult = false;
                         }
+
+                        await excel.SaveExcel(area, owner, i.index);
+
 
                         sw.Stop();
 
@@ -117,15 +128,17 @@ namespace gov.ViewModels
                         {
                             Results.Add(new Result()
                             {
-                                index = i.index,
+                                address = i.fullAddress,
                                 isPictureSuccess = captureResult,
-                                isValueSuccess = valueResult,
+                                isAreaSuccess = areaResult,
+                                isOwnerSuccess = ownerResult,
                                 duration = sw.Elapsed.Seconds.ToString() + "s"
                             });
 
                         });
+
                         sw.Reset();
-                        await crawlerService.CloseTab();
+                        await crawlerService.CloseCompletedTab();
                         CompleteCount++;
                     }
                 }
