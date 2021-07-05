@@ -65,7 +65,7 @@ namespace gov.Services
                 wb.SaveAs(savePath, Excel.XlFileFormat.xlWorkbookDefault);
             }
 
-            catch (Exception ex)
+            catch
             {
                 Debug.WriteLine("엑셀 읽기 오류");
             }

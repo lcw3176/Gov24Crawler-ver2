@@ -80,7 +80,6 @@ namespace gov.ViewModels
                 string area;
 
                 bool captureResult = false;
-                bool valueResult = false;
                 bool documentResult = false;
                 bool validationResult = false;
                 bool ownerResult = false;
