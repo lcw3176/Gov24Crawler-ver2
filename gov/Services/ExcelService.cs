@@ -31,6 +31,11 @@ namespace gov.Services
                 {
                     temp = ws.Cells[i, int.Parse(Config.addressRow)].value;
 
+                    if (temp.Contains("산"))
+                    {
+                        temp = temp.Replace("산", "");
+                    }
+
                     if(temp.Contains("-"))
                     {
                         address.Add(new ExcelData()
