@@ -18,6 +18,7 @@ namespace gov.Services
             Excel.Worksheet ws = null;
             List<ExcelData> address = new List<ExcelData>();
             string temp;
+            string addr;
 
             try
             {
@@ -29,7 +30,8 @@ namespace gov.Services
 
                 for (int i = int.Parse(Config.startCol); i <= int.Parse(Config.endCol); i++)
                 {
-                    temp = ws.Cells[i, int.Parse(Config.addressRow)].value;
+                    addr = ws.Cells[i, int.Parse(Config.addressRow)].value;
+                    temp = addr;
 
                     if (temp.Contains("산"))
                     {
@@ -41,6 +43,7 @@ namespace gov.Services
                         address.Add(new ExcelData()
                         {
                             index = i,
+                            fullAddress = addr,
                             bunzi = temp.Split('-')[0],
                             ho = temp.Split('-')[1]
                         });
@@ -51,6 +54,7 @@ namespace gov.Services
                         address.Add(new ExcelData()
                         {
                             index = i,
+                            fullAddress = addr,
                             bunzi = temp,
                             ho = string.Empty,
                         });

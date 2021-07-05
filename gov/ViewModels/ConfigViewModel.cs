@@ -35,7 +35,7 @@ namespace gov.ViewModels
             get { return Config.firstAddress; }
             set
             {
-                Config.firstAddress = value;
+                Config.firstAddress = value.Trim();
                 OnPropertyUpdate("FisrtAddress");
             }
         }
@@ -46,7 +46,7 @@ namespace gov.ViewModels
             get { return Config.secondAddress; }
             set
             {
-                Config.secondAddress = value;
+                Config.secondAddress = value.Trim();
                 OnPropertyUpdate("SecondAddress");
             }
         }
@@ -57,7 +57,7 @@ namespace gov.ViewModels
             get { return Config.thirdAddress; }
             set
             {
-                Config.thirdAddress = value;
+                Config.thirdAddress = value.Trim();
                 OnPropertyUpdate("ThirdAddress ");
             }
         }
@@ -67,7 +67,7 @@ namespace gov.ViewModels
             get { return Config.startCol; }
             set
             {
-                Config.startCol = value;
+                Config.startCol = value.Trim();
                 OnPropertyUpdate("StartCol");
             }
         }
@@ -78,7 +78,7 @@ namespace gov.ViewModels
             get { return Config.endCol; }
             set
             {
-                Config.endCol = value;
+                Config.endCol = value.Trim();
                 OnPropertyUpdate("EndCol");
             }
         }
@@ -88,7 +88,7 @@ namespace gov.ViewModels
             get { return Config.addressRow; }
             set
             {
-                Config.addressRow = value;
+                Config.addressRow = value.Trim();
                 OnPropertyUpdate("AddressRow");
             }
         }
@@ -108,7 +108,7 @@ namespace gov.ViewModels
             get { return Config.areaRow; }
             set
             {
-                Config.areaRow = value;
+                Config.areaRow = value.Trim();
                 OnPropertyUpdate("AreaRow");
             }
         }
@@ -118,7 +118,7 @@ namespace gov.ViewModels
             get { return Config.ownerRow; }
             set
             {
-                Config.ownerRow = value;
+                Config.ownerRow = value.Trim();
                 OnPropertyUpdate("OwnerRow");
             }
         }

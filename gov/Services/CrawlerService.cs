@@ -112,16 +112,13 @@ namespace gov.Services
                 // 제출 버튼
                 driver.FindElementById("btn_end").Click();
 
-                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(
-                               By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody/tr/td[4]/p[2]/span/a")));
-
                 return Task.FromResult(true);
 
             }
 
             catch
             {
-                Debug.WriteLine("다큐먼트 에러");
+                Console.WriteLine("다큐먼트 에러" + bunzi + "-" + ho);
                 return Task.FromResult(false);
             }
             
@@ -130,6 +127,11 @@ namespace gov.Services
         {
             try
             {
+                // 로딩 대기
+                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(
+                    By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody/tr/td[4]/p[2]/span/a")));
+
+
                 // 자식 요소 검색
                 var children = driver.FindElement(By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody")).FindElements(By.TagName("tr"));
                 string temp;
@@ -158,6 +160,7 @@ namespace gov.Services
                     // 지번 로딩 대기
                     webDriverWait.Until(ExpectedConditions.ElementExists(
                               By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]")));
+
                     // 지번 일치 확인
                     temp = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]").Text;
                     
@@ -177,7 +180,7 @@ namespace gov.Services
 
             catch
             {
-                Debug.WriteLine("밸리데이션 에러");
+                Console.WriteLine("밸리데이션 에러" + bunzi + "-" + ho);
                 return Task.FromResult(false);
             }
 
@@ -190,17 +193,16 @@ namespace gov.Services
             {
                 string area;
                 string areaStore = string.Empty;
-                var children = driver.FindElementById("EncryptionAreaID_0").FindElements(By.TagName("div"));
-
-                Debug.WriteLine(children.Count);
+                // 표 한개당 div 3개, 공유지 연명부 div 1개
+                var children = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]").FindElements(By.TagName("div"));
 
                 // 면적 구하기
-                for (int i = 1; i <= children.Count; i++)
+                for (int i = 1; i <= children.Count / 3; i++)
                 {
                     for (int j = 4; j <= 10; j += 2)
                     {
                         area = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[2]/span").Text;
-                        Debug.WriteLine(area);
+
                         if (string.IsNullOrEmpty(area))
                         {
                             area = areaStore;
@@ -211,12 +213,12 @@ namespace gov.Services
                     }
                 }
 
-                return Task.FromResult(string.Empty);
+                return Task.FromResult(areaStore);
             }
 
             catch
             {
-                Debug.WriteLine("토지 에러");
+                Console.WriteLine("토지 에러");
                 return Task.FromResult(string.Empty);
             }
         }
@@ -227,10 +229,11 @@ namespace gov.Services
             {
                 string owner;
                 string ownerStore = string.Empty;
-                var children = driver.FindElementById("EncryptionAreaID_0").FindElements(By.TagName("div"));
+                // 표 한개당 div 3개, 공유지 연명부 div 1개
+                var children = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]").FindElements(By.TagName("div"));
 
                 // 소유자 구하기
-                for (int i = 1; i <= children.Count; i++)
+                for (int i = 1; i <= children.Count / 3; i++)
                 {
                     for (int j = 5; j <= 11; j += 2)
                     {
@@ -246,12 +249,12 @@ namespace gov.Services
                     }
                 }
 
-                return Task.FromResult(string.Empty);
+                return Task.FromResult(ownerStore);
             }
 
             catch
             {
-                Debug.WriteLine("소유자 에러");
+                Console.WriteLine("소유자 에러");
                 return Task.FromResult(string.Empty);
             }
         }
@@ -288,12 +291,12 @@ namespace gov.Services
 
             catch
             {
-                Debug.WriteLine("캡쳐 에러");
+                Console.WriteLine("캡쳐 에러" + bunzi + "-" + ho);
                 return Task.FromResult(false);
             }
         }
 
-        public Task<bool> CloseTab()
+        public Task<bool> CloseCompletedTab()
         {
             try
             {
