@@ -108,14 +108,15 @@ namespace gov.ViewModels
                         area = await crawlerService.TryGetArea();
                         owner = await crawlerService.TryGetOwner();
 
-                        if (string.IsNullOrEmpty(area))
+                        if (!string.IsNullOrEmpty(area))
                         {
-                            areaResult = false;
+                            areaResult = true;
                         }
 
-                        if(string.IsNullOrEmpty(owner))
+
+                        if(!string.IsNullOrEmpty(owner))
                         {
-                            ownerResult = false;
+                            ownerResult = true;
                         }
 
                         await excel.SaveExcel(area, owner, i.index);
@@ -139,6 +140,9 @@ namespace gov.ViewModels
                         sw.Reset();
                         await crawlerService.CloseCompletedTab();
                         CompleteCount++;
+
+                        ownerResult = false;
+                        areaResult = false;
                     }
                 }
 
