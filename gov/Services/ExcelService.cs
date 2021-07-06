@@ -1,7 +1,7 @@
 ﻿using gov.Models;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -18,7 +18,8 @@ namespace gov.Services
             Excel.Worksheet ws = null;
             List<ExcelData> address = new List<ExcelData>();
             string temp;
-            string addr;
+            bool san = false;
+            StringBuilder addr = new StringBuilder();
 
             try
             {
@@ -30,12 +31,13 @@ namespace gov.Services
 
                 for (int i = int.Parse(Config.startCol); i <= int.Parse(Config.endCol); i++)
                 {
-                    addr = ws.Cells[i, int.Parse(Config.addressRow)].value;
-                    temp = addr;
+                    temp = ws.Cells[i, int.Parse(Config.addressRow)].value;
 
                     if (temp.Contains("산"))
                     {
                         temp = temp.Replace("산", "");
+                        addr.Append("산");
+                        san = true;
                     }
 
                     if(temp.Contains("-"))
@@ -43,9 +45,10 @@ namespace gov.Services
                         address.Add(new ExcelData()
                         {
                             index = i,
-                            fullAddress = addr,
-                            bunzi = temp.Split('-')[0],
-                            ho = temp.Split('-')[1]
+                            fullAddress = addr.Append(temp.Trim()).ToString(),
+                            bunzi = temp.Split('-')[0].Trim(),
+                            ho = temp.Split('-')[1].Trim(),
+                            isSan = san,
                         });
                     }
 
@@ -54,12 +57,16 @@ namespace gov.Services
                         address.Add(new ExcelData()
                         {
                             index = i,
-                            fullAddress = addr,
-                            bunzi = temp,
+                            fullAddress = addr.Append(temp.Trim()).ToString(),
+                            bunzi = temp.Trim(),
                             ho = string.Empty,
+                            isSan = san,
                         });
+
                     }
 
+                    addr.Clear();
+                    san = false;
                 }
 
                 wb.SaveAs(savePath, Excel.XlFileFormat.xlWorkbookDefault);

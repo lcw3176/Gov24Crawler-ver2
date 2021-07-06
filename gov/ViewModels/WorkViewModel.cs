@@ -1,15 +1,12 @@
 ﻿using gov.Commands;
 using gov.Models;
 using gov.Services;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace gov.ViewModels
 {
@@ -95,15 +92,38 @@ namespace gov.ViewModels
                     {
                         sw.Start();
 
-                        documentResult = await crawlerService.TryGetDocument(i.bunzi, i.ho);
-                        validationResult =  await crawlerService.CheckValidation(i.bunzi, i.ho);
+                        documentResult = await crawlerService.TryGetDocument(i.bunzi, i.ho, i.isSan);
+                        validationResult =  await crawlerService.CheckValidation(i.bunzi, i.ho, i.isSan);
 
                         if(!documentResult || !validationResult)
                         {
+                            sw.Stop();
+
+                            DispatcherService.Invoke(() =>
+                            {
+                                Results.Add(new Result()
+                                {
+                                    index = i.index,
+                                    address = i.fullAddress,
+                                    isPictureSuccess = captureResult,
+                                    isAreaSuccess = areaResult,
+                                    isOwnerSuccess = ownerResult,
+                                    duration = sw.Elapsed.Seconds.ToString() + "s"
+                                });
+
+                            });
+
+                            sw.Reset();
+                            CompleteCount++;
+
+                            ownerResult = false;
+                            areaResult = false;
+                            captureResult = false;
+
                             continue;
                         }
 
-                        captureResult = await crawlerService.CaptureImage(i.bunzi, i.ho);
+                        captureResult = await crawlerService.CaptureImage(i.fullAddress);
 
                         area = await crawlerService.TryGetArea();
                         owner = await crawlerService.TryGetOwner();
@@ -128,6 +148,7 @@ namespace gov.ViewModels
                         {
                             Results.Add(new Result()
                             {
+                                index = i.index,
                                 address = i.fullAddress,
                                 isPictureSuccess = captureResult,
                                 isAreaSuccess = areaResult,
@@ -143,6 +164,7 @@ namespace gov.ViewModels
 
                         ownerResult = false;
                         areaResult = false;
+                        captureResult = false;
                     }
                 }
 

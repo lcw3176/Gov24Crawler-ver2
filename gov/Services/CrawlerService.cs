@@ -5,7 +5,6 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace gov.Services
@@ -17,7 +16,7 @@ namespace gov.Services
 
         public CrawlerService()
         {
-            webDriverWait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            webDriverWait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
         }
 
         public Task<bool> TryLogin(string userPw)
@@ -41,7 +40,7 @@ namespace gov.Services
             
         }
 
-        public Task<bool> TryGetDocument(string bunzi, string ho)
+        public Task<bool> TryGetDocument(string bunzi, string ho, bool isSan)
         {
             try
             {
@@ -102,13 +101,25 @@ namespace gov.Services
 
                 driver.SwitchTo().Window(driver.WindowHandles[0]);
 
+                // 대기
+                webDriverWait.Until(ExpectedConditions.ElementExists(
+                    By.XPath("//*[@id=\"토지임야대장신청서_IN-토지임야대장신청서_신청토지소재지_주소정보_상세주소_번지\"]")));
+
+
                 // 번지 입력
-                driver.FindElementById("토지임야대장신청서_IN-토지임야대장신청서_신청토지소재지_주소정보_상세주소_번지").SendKeys(bunzi);
-                driver.FindElementById("토지임야대장신청서_IN-토지임야대장신청서_신청토지소재지_주소정보_상세주소_호").SendKeys(ho);
+                driver.FindElementByXPath("//*[@id=\"토지임야대장신청서_IN-토지임야대장신청서_신청토지소재지_주소정보_상세주소_번지\"]").SendKeys(bunzi);
+                driver.FindElementByXPath("//*[@id=\"토지임야대장신청서_IN-토지임야대장신청서_신청토지소재지_주소정보_상세주소_호\"]").SendKeys(ho);
 
 
                 // 연혁인쇄 설정
                 driver.FindElementById("토지임야대장신청서_IN-토지임야대장신청서_연혁인쇄선택_.라디오코드_1").Click();
+
+                // '산' 들어가 있으면 임야대장으로 변경
+                if (isSan)
+                {
+                    driver.FindElementById("토지임야대장신청서_IN-토지임야대장신청서_대장구분_.라디오코드_2").Click();
+                }
+
                 // 제출 버튼
                 driver.FindElementById("btn_end").Click();
 
@@ -123,14 +134,13 @@ namespace gov.Services
             }
             
         }
-        public Task<bool> CheckValidation(string bunzi, string ho)
+
+        public Task<bool> CheckValidation(string bunzi, string ho, bool isSan)
         {
             try
             {
-                // 로딩 대기
-                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(
-                    By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody/tr/td[4]/p[2]/span/a")));
-
+                webDriverWait.Until(ExpectedConditions.ElementExists(
+                   By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody")));
 
                 // 자식 요소 검색
                 var children = driver.FindElement(By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table/tbody")).FindElements(By.TagName("tr"));
@@ -145,6 +155,11 @@ namespace gov.Services
                 else
                 {
                     tempAddress = bunzi + "-" + ho;
+                }
+
+                if (isSan)
+                {
+                    tempAddress = "산 " + tempAddress;
                 }
 
                 for (int i = 1; i <= children.Count; i++)
@@ -241,8 +256,15 @@ namespace gov.Services
 
                         if (string.IsNullOrEmpty(owner))
                         {
-                            owner = ownerStore;
-                            return Task.FromResult(owner);
+                            // 소유자 말소로 인해 빈칸인 상황 대비
+                            string malso = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[1]").Text;
+
+                            if (string.IsNullOrEmpty(malso))
+                            {
+                                owner = ownerStore;
+                                return Task.FromResult(owner);
+                            }
+                            
                         }
 
                         ownerStore = owner;
@@ -259,7 +281,7 @@ namespace gov.Services
             }
         }
 
-        public Task<bool> CaptureImage(string bunzi, string ho)
+        public Task<bool> CaptureImage(string saveFileName)
         {
             try
             {
@@ -271,19 +293,8 @@ namespace gov.Services
 
                 driver.ExecuteChromeCommand("Emulation.setDeviceMetricsOverride", metrics);
 
-                string tempAddress;
 
-                if (string.IsNullOrEmpty(ho))
-                {
-                    tempAddress = bunzi;
-                }
-
-                else
-                {
-                    tempAddress = bunzi + "-" + ho;
-                }
-
-                string path_to_save_screenshot = Config.savePath + @"/" + tempAddress + ".png";
+                string path_to_save_screenshot = Config.savePath + @"/" + saveFileName + ".png";
                 driver.GetScreenshot().SaveAsFile(path_to_save_screenshot, ScreenshotImageFormat.Png);
                
                 return Task.FromResult(true);
@@ -291,7 +302,7 @@ namespace gov.Services
 
             catch
             {
-                Console.WriteLine("캡쳐 에러" + bunzi + "-" + ho);
+                Console.WriteLine("캡쳐 에러" + saveFileName);
                 return Task.FromResult(false);
             }
         }
