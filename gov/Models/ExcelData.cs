@@ -6,5 +6,6 @@
         public string fullAddress;
         public string bunzi;
         public string ho;
+        public bool isSan;
     }
 }
