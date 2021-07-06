@@ -2,6 +2,7 @@
 {
     public class Result
     {
+        public int index { get; set; }
         public string address { get; set; }
         public bool isAreaSuccess { get; set; }
         public bool isOwnerSuccess { get; set; }
