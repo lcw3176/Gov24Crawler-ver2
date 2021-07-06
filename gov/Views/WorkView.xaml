@@ -19,12 +19,13 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0"
-              Grid.ColumnSpan="6">
+              Grid.ColumnSpan="7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
@@ -84,37 +85,43 @@
 
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
+                   Text="인덱스"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
                    Text="주소"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
         
         <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   Text="면적 수집 여부"
+                   Grid.Column="2"
+                   Text="면적 수집"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
 
         <TextBlock Grid.Row="1"
-                   Grid.Column="2"
-                   Text="소유자 수집 여부"
+                   Grid.Column="3"
+                   Text="소유자 수집"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
 
         
         <TextBlock Grid.Row="1"
-                   Grid.Column="3"
-                   Text="사진 수집 여부"
+                   Grid.Column="4"
+                   Text="사진 수집"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
 
         <TextBlock Grid.Row="1"
-                   Grid.Column="4"
+                   Grid.Column="5"
                    Text="소요 시간"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
 
         <ScrollViewer Grid.Row="2"
-                      Grid.ColumnSpan="5">
+                      Grid.ColumnSpan="6">
 
             <ItemsControl ItemsSource="{Binding Results}">
                 <ItemsControl.ItemTemplate>
@@ -124,43 +131,25 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="{Binding address}"
+                                   Text="{Binding index}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
 
+
                             <TextBlock Grid.Row="1"
                                    Grid.Column="1"
+                                   Text="{Binding address}"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding isAreaSuccess}"
-                                                         Value="true">
-                                                <Setter Property="Foreground"
-                                                        Value="Blue"/>
-                                                <Setter Property="Text"
-                                                        Value="성공"/>
-                                            </DataTrigger>
-
-                                            <DataTrigger Binding="{Binding isAreaSuccess}"
-                                                         Value="false">
-                                                <Setter Property="Foreground"
-                                                        Value="Red"/>
-                                                <Setter Property="Text"
-                                                        Value="실패"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
+                                   HorizontalAlignment="Center"/>
+                            
+                            
                             <TextBlock Grid.Row="1"
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
@@ -168,7 +157,7 @@
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding isOwnerSuccess}"
+                                            <DataTrigger Binding="{Binding isAreaSuccess}"
                                                          Value="true">
                                                 <Setter Property="Foreground"
                                                         Value="Blue"/>
@@ -176,7 +165,7 @@
                                                         Value="성공"/>
                                             </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding isOwnerSuccess}"
+                                            <DataTrigger Binding="{Binding isAreaSuccess}"
                                                          Value="false">
                                                 <Setter Property="Foreground"
                                                         Value="Red"/>
@@ -192,6 +181,33 @@
                                    Grid.Column="3"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding isOwnerSuccess}"
+                                                         Value="true">
+                                                <Setter Property="Foreground"
+                                                        Value="Blue"/>
+                                                <Setter Property="Text"
+                                                        Value="성공"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding isOwnerSuccess}"
+                                                         Value="false">
+                                                <Setter Property="Foreground"
+                                                        Value="Red"/>
+                                                <Setter Property="Text"
+                                                        Value="실패"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="1"
+                                   Grid.Column="4"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center">
 
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
@@ -217,7 +233,7 @@
                             </TextBlock>
 
                             <TextBlock Grid.Row="1"
-                                   Grid.Column="4"
+                                   Grid.Column="5"
                                    Text="{Binding duration}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
