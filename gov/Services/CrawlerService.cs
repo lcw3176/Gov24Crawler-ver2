@@ -210,7 +210,7 @@ namespace gov.Services
                 string areaStore = string.Empty;
                 // 표 한개당 div 3개, 공유지 연명부 div 1개
                 var children = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]").FindElements(By.TagName("div"));
-
+               
                 // 면적 구하기
                 for (int i = 1; i <= children.Count / 3; i++)
                 {
@@ -220,8 +220,14 @@ namespace gov.Services
 
                         if (string.IsNullOrEmpty(area))
                         {
-                            area = areaStore;
-                            return Task.FromResult(area);
+                            // 면적 분할, 합병에 의한 빈칸 체크
+                            string merge = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[3]").Text;
+                            
+                            if (string.IsNullOrEmpty(merge))
+                            {
+                                area = areaStore;
+                                return Task.FromResult(area);
+                            }
                         }
 
                         areaStore = area;
