@@ -45,17 +45,21 @@ namespace gov.Services
             try
             {
                 driver.Navigate().GoToUrl("https://www.gov.kr/portal/main");
+
+                // 임시 팝업 제거 코드
+                driver.ExecuteScript("document.getElementsByClassName('popWrap img_pop')[0].style.display='none';");
+
                 // 토지(임야)대장 대기 후 클릭
-                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"container\"]/div/section[5]/div/div[2]/div[2]/ul/li[2]/div/a[3]")));
-                driver.FindElementByXPath("//*[@id=\"container\"]/div/section[5]/div/div[2]/div[2]/ul/li[2]/div/a[3]").Click();
+                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"container\"]/div/section[5]/div/div[2]/div[2]/ul/li[1]/div/a[3]")));
+                driver.FindElementByXPath("//*[@id=\"container\"]/div/section[5]/div/div[2]/div[2]/ul/li[1]/div/a[3]").Click();
 
                 // 신청 버튼 대기 후 클릭
                 webDriverWait.Until(ExpectedConditions.ElementToBeClickable(By.Id("applyBtn")));
                 driver.FindElementById("applyBtn").Click();
 
                 // 토지 대장 열람 창 전환
-                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("/html/body/div[6]/div/div[1]/div[1]/a[3]")));
-                driver.FindElementByXPath("/html/body/div[6]/div/div[1]/div[1]/a[3]").SendKeys(Keys.Enter);
+                webDriverWait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("/html/body/div[7]/div/div[1]/div[1]/a[3]")));
+                driver.FindElementByXPath("/html/body/div[7]/div/div[1]/div[1]/a[3]").SendKeys(Keys.Enter);
 
                 // 주소 입력 창 띄우기
                 var handles_before = driver.WindowHandles;
@@ -174,10 +178,9 @@ namespace gov.Services
                     
                     // 지번 로딩 대기
                     webDriverWait.Until(ExpectedConditions.ElementExists(
-                              By.XPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]")));
-
+                              By.XPath("/html/body/div/div/div[2]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]")));
                     // 지번 일치 확인
-                    temp = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]").Text;
+                    temp = driver.FindElementByXPath("/html/body/div/div/div[2]/div[1]/table[2]/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[2]").Text;
                     
                     if (temp == tempAddress)
                     {
@@ -193,8 +196,9 @@ namespace gov.Services
                 return Task.FromResult(false);
             }
 
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 Console.WriteLine("밸리데이션 에러" + bunzi + "-" + ho);
                 return Task.FromResult(false);
             }
@@ -209,19 +213,19 @@ namespace gov.Services
                 string area;
                 string areaStore = string.Empty;
                 // 표 한개당 div 3개, 공유지 연명부 div 1개
-                var children = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]").FindElements(By.TagName("div"));
-               
+                var children = driver.FindElementByXPath("/html/body/div/div/div[2]").FindElements(By.TagName("div"));
+
                 // 면적 구하기
                 for (int i = 1; i <= children.Count / 3; i++)
                 {
                     for (int j = 4; j <= 10; j += 2)
                     {
-                        area = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[2]/span").Text;
+                        area = driver.FindElementByXPath("/html/body/div/div/div[2]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[2]/span").Text;
 
                         if (string.IsNullOrEmpty(area))
                         {
                             // 면적 분할, 합병에 의한 빈칸 체크
-                            string merge = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[3]").Text;
+                            string merge = driver.FindElementByXPath("/html/body/div/div/div[2]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[3]").Text;
                             
                             if (string.IsNullOrEmpty(merge))
                             {
@@ -237,8 +241,10 @@ namespace gov.Services
                 return Task.FromResult(areaStore);
             }
 
-            catch
+            catch(Exception ex)
             {
+                // 에러 수정 필요
+                Console.WriteLine(ex);
                 Console.WriteLine("토지 에러");
                 return Task.FromResult(string.Empty);
             }
@@ -251,19 +257,19 @@ namespace gov.Services
                 string owner;
                 string ownerStore = string.Empty;
                 // 표 한개당 div 3개, 공유지 연명부 div 1개
-                var children = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]").FindElements(By.TagName("div"));
+                var children = driver.FindElementByXPath("/html/body/div/div/div[2]").FindElements(By.TagName("div"));
 
                 // 소유자 구하기
                 for (int i = 1; i <= children.Count / 3; i++)
                 {
                     for (int j = 5; j <= 11; j += 2)
                     {
-                        owner = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[2]").Text;
+                        owner = driver.FindElementByXPath("/html/body/div/div/div[2]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[2]").Text;
 
                         if (string.IsNullOrEmpty(owner))
                         {
                             // 소유자 말소로 인해 빈칸인 상황 대비
-                            string malso = driver.FindElementByXPath("//*[@id=\"EncryptionAreaID_0\"]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[1]").Text;
+                            string malso = driver.FindElementByXPath("/html/body/div/div/div[2]/div[" + i.ToString() + "]/table[2]/tbody/tr[2]/td/table/tbody/tr[" + j.ToString() + "]/td[1]").Text;
 
                             if (string.IsNullOrEmpty(malso))
                             {

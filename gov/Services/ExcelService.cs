@@ -1,4 +1,5 @@
 ﻿using gov.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -72,8 +73,9 @@ namespace gov.Services
                 wb.SaveAs(savePath, Excel.XlFileFormat.xlWorkbookDefault);
             }
 
-            catch
+            catch(Exception ex)
             {
+                Debug.WriteLine(ex);
                 Debug.WriteLine("엑셀 읽기 오류");
             }
 
