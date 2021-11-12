@@ -25,7 +25,7 @@ namespace gov.Services
             {
                 driver.Navigate().GoToUrl("https://www.gov.kr/nlogin/?Mcode=10003");
 
-                driver.FindElementByXPath("/html/body/div[7]/ul/li[3]/a").Click();
+                driver.FindElementByXPath("/html/body/div[8]/ul/li[3]/a").Click();
                 driver.FindElementById("userId").SendKeys(User.userId);
                 driver.FindElementById("pwd").SendKeys(userPw);
                 driver.FindElementById("genLogin").Click();
