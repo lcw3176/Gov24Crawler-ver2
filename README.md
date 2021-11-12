@@ -18,7 +18,10 @@
 ## 실행 전 준비요소
 * AnySign for PC 설치
 * 정부24 아이디 (비밀번호 변경 권유 메세지가 뜬다면 변경후 진행할 것)
-* Chrome 브라우저 (최신 버전, [업데이트 방법](https://support.google.com/chrome/answer/95414?co=GENIE.Platform%3DDesktop&hl=ko) 참고)
+* Chrome 브라우저
+* Chrome 브라우저와 동일한 버전의 ChromeDriver 
+    - [드라이버_다운로드](https://chromedriver.chromium.org/downloads)
+    - [브라우저_버전_확인](https://support.google.com/chrome/answer/95414?hl=ko&co=GENIE.Platform%3DDesktop#zippy=%2C%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8-%EB%B0%8F-%ED%98%84%EC%9E%AC-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EB%B2%84%EC%A0%84-%ED%99%95%EC%9D%B8)
 
 ## 실행법
 1. [Release 채널로 이동](https://github.com/lcw3176/Gov24Crawler-ver2/releases)
@@ -51,10 +54,8 @@
 ## 에러 발생 시
 ### 시트 이름 확인
 * 데이터 수집할 페이지 이름을 Sheet1으로 변경 후 실행
-### Chrome 브라우저 버전 확인
-* 최신 버전이 아닐 시 작동하지 않음
-### 패키지 버전 확인
-* 프로젝트(P) -> Nuget 패키지 관리 로 이동 후 설치된 라이브러리 업데이트
+### Chrome 브라우저, 드라이버 버전 확인
+* 설치된 브라우저와 드라이버가 동일한 버전이 아닐 시 작동하지 않음
 ### 파일 위치 확인
 * gov.exe 파일과 chromedriver.exe, SeleniumExtras.WaitHelpers.dll, WebDriver.dll은 같은 위치에 있어야 함.
 
