@@ -32,7 +32,7 @@ namespace gov.Services
 
                 for (int i = int.Parse(Config.startCol); i <= int.Parse(Config.endCol); i++)
                 {
-                    temp = ws.Cells[i, int.Parse(Config.addressRow)].value;
+                    temp = Convert.ToString(ws.Cells[i, int.Parse(Config.addressRow)].value);
 
                     if (temp.Contains("산"))
                     {
