@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace gov.Services
@@ -73,9 +74,10 @@ namespace gov.Services
                 wb.SaveAs(savePath, Excel.XlFileFormat.xlWorkbookDefault);
             }
 
-            catch(Exception ex)
+            catch(Exception e)
             {
-                Debug.WriteLine(ex);
+                MessageBox.Show(e.Message, "메롱");
+                Debug.WriteLine(e);
                 Debug.WriteLine("엑셀 읽기 오류");
             }
 
@@ -105,8 +107,9 @@ namespace gov.Services
                 return Task.FromResult(true);
             }
 
-            catch
+            catch(Exception e)
             {
+                MessageBox.Show(e.Message, "메롱");
                 Debug.WriteLine("엑셀 쓰기 오류");
                 return Task.FromResult(false);
             }

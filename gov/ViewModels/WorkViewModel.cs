@@ -1,11 +1,13 @@
 ﻿using gov.Commands;
 using gov.Models;
 using gov.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace gov.ViewModels
@@ -69,34 +71,81 @@ namespace gov.ViewModels
         {
             Task.Run(async () =>
             {
-                EndCount = int.Parse(Config.endCol) - int.Parse(Config.startCol) + 1;
-                CrawlerService crawlerService = new CrawlerService();
-
-                string password = (obj as PasswordBox).Password;
-                string owner;
-                string area;
-
-                bool captureResult = false;
-                bool documentResult = false;
-                bool validationResult = false;
-                bool ownerResult = false;
-                bool areaResult = false;
-
-                if (await crawlerService.TryLogin(password))
+                try
                 {
-                    ExcelService excel = new ExcelService();
-                    List<ExcelData> datas = excel.ReadExcel();
-                    Stopwatch sw = new Stopwatch();
+                    EndCount = int.Parse(Config.endCol) - int.Parse(Config.startCol) + 1;
+                    CrawlerService crawlerService = new CrawlerService();
 
-                    foreach (ExcelData i in datas)
+                    string password = (obj as PasswordBox).Password;
+                    string owner;
+                    string area;
+
+                    bool captureResult = false;
+                    bool documentResult = false;
+                    bool validationResult = false;
+                    bool ownerResult = false;
+                    bool areaResult = false;
+
+                    if (await crawlerService.TryLogin(password))
                     {
-                        sw.Start();
+                        ExcelService excel = new ExcelService();
+                        List<ExcelData> datas = excel.ReadExcel();
+                        Stopwatch sw = new Stopwatch();
 
-                        documentResult = await crawlerService.TryGetDocument(i.bunzi, i.ho, i.isSan);
-                        validationResult =  await crawlerService.CheckValidation(i.bunzi, i.ho, i.isSan);
-
-                        if(!documentResult || !validationResult)
+                        foreach (ExcelData i in datas)
                         {
+                            sw.Start();
+
+                            documentResult = await crawlerService.TryGetDocument(i.bunzi, i.ho, i.isSan);
+                            validationResult = await crawlerService.CheckValidation(i.bunzi, i.ho, i.isSan);
+
+                            if (!documentResult || !validationResult)
+                            {
+                                sw.Stop();
+
+                                DispatcherService.Invoke(() =>
+                                {
+                                    Results.Add(new Result()
+                                    {
+                                        index = i.index,
+                                        address = i.fullAddress,
+                                        isPictureSuccess = captureResult,
+                                        isAreaSuccess = areaResult,
+                                        isOwnerSuccess = ownerResult,
+                                        duration = sw.Elapsed.Seconds.ToString() + "s"
+                                    });
+
+                                });
+
+                                sw.Reset();
+                                CompleteCount++;
+
+                                ownerResult = false;
+                                areaResult = false;
+                                captureResult = false;
+
+                                continue;
+                            }
+
+                            captureResult = await crawlerService.CaptureImage(i.fullAddress);
+
+                            area = await crawlerService.TryGetArea();
+                            owner = await crawlerService.TryGetOwner();
+
+                            if (!string.IsNullOrEmpty(area))
+                            {
+                                areaResult = true;
+                            }
+
+
+                            if (!string.IsNullOrEmpty(owner))
+                            {
+                                ownerResult = true;
+                            }
+
+                            await excel.SaveExcel(area, owner, i.index);
+
+
                             sw.Stop();
 
                             DispatcherService.Invoke(() =>
@@ -114,59 +163,19 @@ namespace gov.ViewModels
                             });
 
                             sw.Reset();
+                            await crawlerService.CloseCompletedTab();
                             CompleteCount++;
 
                             ownerResult = false;
                             areaResult = false;
                             captureResult = false;
-
-                            continue;
                         }
-
-                        captureResult = await crawlerService.CaptureImage(i.fullAddress);
-
-                        area = await crawlerService.TryGetArea();
-                        owner = await crawlerService.TryGetOwner();
-
-                        if (!string.IsNullOrEmpty(area))
-                        {
-                            areaResult = true;
-                        }
-
-
-                        if(!string.IsNullOrEmpty(owner))
-                        {
-                            ownerResult = true;
-                        }
-
-                        await excel.SaveExcel(area, owner, i.index);
-
-
-                        sw.Stop();
-
-                        DispatcherService.Invoke(() =>
-                        {
-                            Results.Add(new Result()
-                            {
-                                index = i.index,
-                                address = i.fullAddress,
-                                isPictureSuccess = captureResult,
-                                isAreaSuccess = areaResult,
-                                isOwnerSuccess = ownerResult,
-                                duration = sw.Elapsed.Seconds.ToString() + "s"
-                            });
-
-                        });
-
-                        sw.Reset();
-                        await crawlerService.CloseCompletedTab();
-                        CompleteCount++;
-
-                        ownerResult = false;
-                        areaResult = false;
-                        captureResult = false;
                     }
+                } catch(Exception e)
+                {
+
                 }
+             
 
             });
            
